@@ -5,7 +5,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import stelaTheme from "./themes/stela";
 import { ThemeProvider } from "@mui/material/styles";
-import { BrowserRouter } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 import store from "./app/store";
 import { Provider } from "react-redux";
 import "./firebase/firebase.config";
@@ -16,11 +16,11 @@ console.log(stelaTheme);
 root.render(
   // <React.StrictMode>
   <Provider store={store}>
-    <BrowserRouter>
+    <HashRouter>
       <ThemeProvider theme={stelaTheme}>
         <App />
       </ThemeProvider>
-    </BrowserRouter>
+    </HashRouter>
   </Provider>
   // </React.StrictMode>
 );
