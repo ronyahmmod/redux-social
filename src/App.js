@@ -1,24 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
-
+import { Routes, Route } from "react-router-dom";
+import Dashboard from "./pages/Dashboard";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Overview from "./pages/Overview";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { setLoggedInUser } from "./feature/user/userSlice";
 function App() {
+  const dispatch = useDispatch();
+  const auth = getAuth();
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // const userId = user.uid;
+        dispatch(setLoggedInUser(user));
+      } else {
+        dispatch(setLoggedInUser(null));
+      }
+    });
+    return () => {
+      unsubscribe();
+    };
+  });
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes>
+      <Route path="/" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/dashboard" element={<Dashboard />}>
+        <Route path="overview" element={<Overview />} />
+      </Route>
+    </Routes>
   );
 }
 
